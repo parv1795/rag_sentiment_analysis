@@ -5,7 +5,7 @@ import nltk
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain.vectorstores import Chroma  # Using Chroma instead of FAISS
+from langchain.vectorstores import InMemoryStore  # Simple in-memory vector store
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
@@ -219,8 +219,44 @@ with st.sidebar:
             # Create embeddings
             embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
             
-            # Create vector store with Chroma instead of FAISS
-            st.session_state.vectorstore = Chroma.from_texts(chunks, embeddings)
+            # Create simpler vector store that doesn't require external databases
+            from langchain.vectorstores import FAISS
+            try:
+                # Try FAISS first (some systems have it preinstalled)
+                st.session_state.vectorstore = FAISS.from_texts(chunks, embeddings)
+                st.write("Using FAISS for vector storage")
+            except ImportError:
+                # Fall back to a simple dictionary-based approach if FAISS is not available
+                st.write("FAISS not available, using simpler vector search")
+                
+                # Create a simple dictionary to store document chunks and their embeddings
+                doc_store = {}
+                for i, chunk in enumerate(chunks):
+                    doc_store[i] = {"text": chunk, "embedding": embeddings.embed_query(chunk)}
+                
+                # Function to search for similar chunks
+                def similarity_search(query, k=3):
+                    query_embedding = embeddings.embed_query(query)
+                    scores = []
+                    for i, doc in doc_store.items():
+                        # Calculate dot product similarity
+                        similarity = sum(a*b for a, b in zip(query_embedding, doc["embedding"]))
+                        scores.append((i, similarity))
+                    
+                    # Get top k results
+                    scores.sort(key=lambda x: x[1], reverse=True)
+                    top_k = scores[:k]
+                    
+                    # Return documents in LangChain expected format
+                    from langchain.schema import Document
+                    return [Document(page_content=doc_store[i]["text"], metadata={}) for i, _ in top_k]
+                
+                # Create a simple wrapper class that mimics LangChain's vectorstore interface
+                class SimpleVectorStore:
+                    def similarity_search(self, query, k=3):
+                        return similarity_search(query, k)
+                
+                st.session_state.vectorstore = SimpleVectorStore()
             
             # Generate conversation starters
             model_name = "gemini-1.5-flash"  # Use the recommended model
