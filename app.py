@@ -71,7 +71,8 @@ st.markdown("""
     .chat-message .message {
         width: 85%;
         padding-left: 10px;
-        color: #000000;  /* Ensure text is black for visibility */
+        color: #000000;  /* Black text for maximum contrast */
+        font-weight: 500;  /* Slightly bolder text */
     }
     h1, h2, h3 {
         color: #1e88e5;
@@ -408,7 +409,7 @@ with tab3:
         # Display the summary if it exists
         if st.session_state.summary and len(st.session_state.summary) > 0:
             st.markdown(f"""
-            <div style="background-color: #f0f7ff; padding: 20px; border-radius: 10px; border: 1px solid #1e88e5; color: #000000;">
+            <div style="background-color: #f0f7ff; padding: 20px; border-radius: 10px; border: 1px solid #1e88e5; color: #000000; font-weight: 500;">
                 {st.session_state.summary}
             </div>
             """, unsafe_allow_html=True)
