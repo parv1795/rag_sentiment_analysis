@@ -312,7 +312,7 @@ tab1, tab2, tab3 = st.tabs(["💬 Chat", "📊 Sentiment Analysis", "📝 Summar
 # CHAT TAB - TAB 1
 with tab1:
     if not st.session_state.ready:
-        st.info("Please upload a PDF file and enter your Gemini API key to start chatting.")
+        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to start chatting.</div>', unsafe_allow_html=True)
     else:
         # Conversation starter buttons with unique keys
         with st.expander("Conversation Starters", expanded=True):
@@ -327,16 +327,16 @@ with tab1:
             with st.container():
                 if message["role"] == "user":
                     st.markdown(f"""
-                    <div class="chat-message user">
-                        <div class="avatar">👤</div>
-                        <div class="message">{message["content"]}</div>
+                    <div class="chat-message user" style="background-color: #ddedff;">
+                        <div class="avatar" style="color: black;">👤</div>
+                        <div class="message" style="color: black; font-weight: bold;">{message["content"]}</div>
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
-                    <div class="chat-message bot">
-                        <div class="avatar">🤖</div>
-                        <div class="message">{message["content"]}</div>
+                    <div class="chat-message bot" style="background-color: #f1f1f1;">
+                        <div class="avatar" style="color: black;">🤖</div>
+                        <div class="message" style="color: black; font-weight: bold;">{message["content"]}</div>
                     </div>
                     """, unsafe_allow_html=True)
         
@@ -366,7 +366,7 @@ with tab1:
 # SENTIMENT ANALYSIS TAB - TAB 2
 with tab2:
     if not st.session_state.ready:
-        st.info("Please upload a PDF file and enter your Gemini API key to view sentiment analysis.")
+        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to view sentiment analysis.</div>', unsafe_allow_html=True)
     else:
         st.header("Sentiment Analysis")
         st.write("This is a simple analysis of your document content.")
@@ -402,14 +402,14 @@ with tab2:
 # SUMMARY TAB - TAB 3
 with tab3:
     if not st.session_state.ready:
-        st.info("Please upload a PDF file and enter your Gemini API key to view the document summary.")
+        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to view the document summary.</div>', unsafe_allow_html=True)
     else:
         st.header("Document Summary")
         
         # Display the summary if it exists
         if st.session_state.summary and len(st.session_state.summary) > 0:
             st.markdown(f"""
-            <div style="background-color: #f0f7ff; padding: 20px; border-radius: 10px; border: 1px solid #1e88e5; color: #000000; font-weight: 500;">
+            <div style="background-color: #ddedff; padding: 20px; border-radius: 10px; border: 1px solid #1e88e5; color: black !important; font-weight: bold !important;">
                 {st.session_state.summary}
             </div>
             """, unsafe_allow_html=True)
