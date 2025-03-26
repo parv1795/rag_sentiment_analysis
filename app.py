@@ -5,7 +5,7 @@ import nltk
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Chroma  # Using Chroma instead of FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
@@ -219,8 +219,8 @@ with st.sidebar:
             # Create embeddings
             embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
             
-            # Create vector store
-            st.session_state.vectorstore = FAISS.from_texts(chunks, embeddings)
+            # Create vector store with Chroma instead of FAISS
+            st.session_state.vectorstore = Chroma.from_texts(chunks, embeddings)
             
             # Generate conversation starters
             model_name = "gemini-1.5-flash"  # Use the recommended model
