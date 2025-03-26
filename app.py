@@ -311,8 +311,15 @@ tab1, tab2, tab3 = st.tabs(["💬 Chat", "📊 Sentiment Analysis", "📝 Summar
 
 # CHAT TAB - TAB 1
 with tab1:
+    # Information messages with inline CSS to ensure visibility
     if not st.session_state.ready:
-        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to start chatting.</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; border: 1px solid #1e88e5;">
+            <p style="color: black !important; font-weight: bold !important; margin: 0;">
+                Please upload a PDF file and enter your Gemini API key to start chatting.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         # Conversation starter buttons with unique keys
         with st.expander("Conversation Starters", expanded=True):
@@ -365,11 +372,18 @@ with tab1:
 
 # SENTIMENT ANALYSIS TAB - TAB 2
 with tab2:
+    # Information messages with inline CSS to ensure visibility
     if not st.session_state.ready:
-        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to view sentiment analysis.</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; border: 1px solid #1e88e5;">
+            <p style="color: black !important; font-weight: bold !important; margin: 0;">
+                Please upload a PDF file and enter your Gemini API key to view sentiment analysis.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.header("Sentiment Analysis")
-        st.write("This is a simple analysis of your document content.")
+        st.markdown('<p style="color: black !important; font-weight: bold !important;">This is a simple analysis of your document content.</p>', unsafe_allow_html=True)
         
         # Display word count
         st.metric("Total Words", f"{st.session_state.sentiment_analysis['word_count']:,}")
@@ -395,14 +409,23 @@ with tab2:
             # Show a few simple statistics
             sentences = len(st.session_state.text.split('.'))
             characters = len(st.session_state.text)
-            st.write(f"Sentences: {sentences:,}")
-            st.write(f"Characters: {characters:,}")
-            st.write(f"Avg. Sentence Length: {st.session_state.sentiment_analysis['word_count'] / sentences if sentences > 0 else 0:.1f} words")
+            st.markdown(f"""
+            <p style="color: black !important; font-weight: bold !important;">Sentences: {sentences:,}</p>
+            <p style="color: black !important; font-weight: bold !important;">Characters: {characters:,}</p>
+            <p style="color: black !important; font-weight: bold !important;">Avg. Sentence Length: {st.session_state.sentiment_analysis['word_count'] / sentences if sentences > 0 else 0:.1f} words</p>
+            """, unsafe_allow_html=True)
 
 # SUMMARY TAB - TAB 3
 with tab3:
+    # Information messages with inline CSS to ensure visibility
     if not st.session_state.ready:
-        st.markdown('<div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; color: black; font-weight: bold;">Please upload a PDF file and enter your Gemini API key to view the document summary.</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="background-color: #e7f3fe; padding: 15px; border-radius: 5px; border: 1px solid #1e88e5;">
+            <p style="color: black !important; font-weight: bold !important; margin: 0;">
+                Please upload a PDF file and enter your Gemini API key to view the document summary.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.header("Document Summary")
         
